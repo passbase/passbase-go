@@ -1,0 +1,929 @@
+openapi: 3.0.0
+info:
+  title: Verification API
+  description: |
+    # Introduction
+
+    <span class="subtext">
+    Welcome to the Passbase Verifications API docs. This documentation will
+    help you understand our models and the Verification API with its endpoints.
+    Based on this you can build your own system (i.e. verification) and hook it
+    up to Passbase.
+
+    In case of feedback or questions you can reach us under this email address: [developer@passbase.com](mailto:developer@passbase.com).
+    </span>
+
+    A User submits a video selfie and valid identifying __Resources__ during a
+    __Verification__ guided by the Passbase client-side integration. Once all
+    the necessary __Resources__ are submitted, __Data points__ are extracted,
+    digitized, and authenticated. These Data points then becomes part of the
+    User's __Identity__. The User then consents to share __Resources__ and/or
+    __Data points__ from their Identity with you. This information is passed
+    to you and can be used to make decisions about a User (e.g. activate account).
+    This table below explains our terminology further.
+
+    | Term                                    | Description |
+    |-----------------------------------------|-------------|
+    | Data points                             | Any data about a User extracted from a Resource (E.g. Passport Number, or Age). |
+    | [Resource](#tag/resource_model)         | A source document used to generate the Data points for a User (E.g. Passport). |
+    | [Identity](#tag/identity_model)         | A set of Data points and Resources related to and owned by one single User. This data can be accessed by you through a Verification. |
+    | [User](#tag/user_model)                 | The owner of an email address associated with an Identity. |
+    | Verification (signup)                   | A transaction through which a User consents to share Data points with you. If the Data points you request are not already available in the User's Identity, the Passbase client will ask the User to submit the necessary Resource required to extract them. |
+    | Re-authentication (login)               | A transaction through which a User can certify the ownership of Personal data previously shared through an Authentication. |
+
+
+    # Authentication
+
+    <span class="subtext">
+    There are two forms of authentication for the API:
+    <br/>&bull; API Key
+    <br/>&bull; Bearer JWT Token
+
+    </span>
+  version: 1.0.0
+  x-logo:
+    url: /img/logo.png
+    backgroundColor: '#F5F7F9'
+    altText: Passbase Docs logo
+servers:
+- url: https://api.passbase.com/verification/v1
+security:
+- SecretApiKey: []
+tags:
+- name: Identity
+  description: |
+    <span class="subtext">
+    We distinguish between a user and his digital identity.
+
+    A user has to submit resources, like documents about himself, in order to create a valid
+    digital identity. This information can be used to prove if the user is who he claims to be
+    and even uncover potential bad actors.
+
+    A verification is in the `"processing"` state when the Passbase Team is working on it and in the
+    `"pending"` one when it's the customers turn to accept or reject the verification.
+
+    Once the user was verified he can use his saved identity for gaining
+    access to the provided services of a customer.
+    </span>
+- name: User
+- name: Project
+  description: |
+    <span class="subtext">
+    Customers are able to create different projects in which they
+    define specifics on how the verification flow will look like and
+    also what documents are required for the verification.
+    </span>
+- name: datapoints_model
+  description: |
+    <SchemaDefinition schemaRef="#/components/schemas/DataPoints" />
+  x-displayName: Data Points
+- name: resource_model
+  description: |
+    <SchemaDefinition schemaRef="#/components/schemas/Resource" />
+  x-displayName: Resource
+- name: identity_model
+  description: |
+    <SchemaDefinition schemaRef="#/components/schemas/Identity" />
+  x-displayName: Identity
+- name: user_model
+  description: |
+    <SchemaDefinition schemaRef="#/components/schemas/User" />
+  x-displayName: User
+- name: project_settings_model
+  description: |
+    <SchemaDefinition schemaRef="#/components/schemas/ProjectSettings" />
+  x-displayName: Project Settings
+paths:
+  /identities:
+    get:
+      tags:
+      - Identity
+      summary: List identities
+      description: List all the identities retrievable by the provided API Secret
+        Key.
+      operationId: listIdentities
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+        example: 100
+      - name: cursor
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: aWQ6NDA3MQ%3D%3D
+      responses:
+        "200":
+          description: List of project identities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIdentities'
+        "401":
+          description: your api_key is invalid
+  /identities/{id}:
+    get:
+      tags:
+      - Identity
+      summary: Get identity
+      description: Retrieve an identity by providing the identity ID.
+      operationId: getIdentyById
+      parameters:
+      - name: id
+        in: path
+        description: Unique ID of the identity to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: identity data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Identity'
+                x-content-type: application/json
+        "400":
+          description: bad input parameter
+        "401":
+          description: your api_key is invalid
+        "404":
+          description: identity not found with the given ID
+  /identities/{id}/resources:
+    get:
+      tags:
+      - Identity
+      summary: List resources
+      description: List resources attached to an identity by providing the identity
+        ID.
+      operationId: listIdentityResources
+      parameters:
+      - name: id
+        in: path
+        description: Identity id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+        example: 100
+      - name: cursor
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: aWQ6NDA3MQ%3D%3D
+      responses:
+        "200":
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResources'
+        "400":
+          description: bad input parameter
+        "401":
+          description: your api_key is invalid
+        "404":
+          description: identity not found with the given ID
+  /identities/{id}/resource/{resource_id}:
+    get:
+      tags:
+      - Identity
+      summary: Get resource
+      description: |
+        Get a resource attached to an identity by providing the resource ID.
+      operationId: getIdentityResourceById
+      parameters:
+      - name: id
+        in: path
+        description: Identity id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: resource_id
+        in: path
+        description: Resource id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+        "400":
+          description: bad input parameter
+        "401":
+          description: your api_key is invalid
+        "404":
+          description: resource not found for the given resource ID
+  /settings:
+    get:
+      tags:
+      - Project
+      summary: Get project settings
+      description: |
+        Get project settings
+      operationId: getSettings
+      responses:
+        "200":
+          description: Project settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectSettings'
+        "400":
+          description: bad input parameter
+        "401":
+          description: your api_key is invalid
+components:
+  schemas:
+    ResourceInput:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ResourceType'
+        country:
+          type: string
+          description: 2-letter code of the country
+          example: DE
+        resource_files:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceFilesInput'
+        resourceData:
+          type: object
+        resourceRawData:
+          type: object
+          nullable: true
+    Resource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID representing a resource
+          format: uuid
+        status:
+          type: string
+          description: Current state of the resource in Passbase's systems
+          enum:
+          - created
+          - processing
+          - processed
+        created:
+          type: integer
+          description: Unix-timestamp of when the resource was created
+          format: int64
+          example: 1600250430
+        updated:
+          type: integer
+          description: Unix-timestamp of when the resource was updated
+          format: int64
+          example: 1600250430
+        type:
+          $ref: '#/components/schemas/ResourceType'
+        resource_files:
+          $ref: '#/components/schemas/ResourceFiles'
+      example:
+        created: 1600250430
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: NATIONAL_ID_CARD
+        updated: 1600250430
+        resource_files:
+        - created: 1600250430
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          page: 0
+          type: face_video
+          updated: 1600250430
+        - created: 1600250430
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          page: 0
+          type: face_video
+          updated: 1600250430
+        status: created
+    ResourceFilesInput:
+      type: array
+      items:
+        $ref: '#/components/schemas/ResourceFilesInput_inner'
+      x-schema-name: ResourceFilesInput
+    ResourceFiles:
+      type: array
+      items:
+        $ref: '#/components/schemas/ResourceFiles_inner'
+      x-schema-name: ResourceFiles
+    ResourceFile:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID representing a resource file
+          format: uuid
+        created:
+          type: integer
+          description: Unix-timestamp of when the resource was created
+          format: int64
+          example: 1600250430
+        updated:
+          type: integer
+          description: Unix-timestamp of when the resource was updated
+          format: int64
+          example: 1600250430
+        file:
+          type: string
+          description: 'Raw bytes: the actual file'
+          format: binary
+    Identity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of the identity
+          example: 00000000-0000-0000-0000-000000000000
+        status:
+          type: string
+          description: Current state of the identity in Passbase's systems
+          enum:
+          - created
+          - processing
+          - pending
+          - approved
+          - declined
+        created:
+          type: integer
+          description: Unix-timestamp of when the identity was created
+          format: int64
+          example: 1600250430
+        updated:
+          type: integer
+          description: Unix-timestamp of when the identity was updated
+          format: int64
+          example: 1600250430
+        resources:
+          type: array
+          description: resources attached to a verification
+          items:
+            $ref: '#/components/schemas/IdentityResource'
+        watchlist:
+          $ref: '#/components/schemas/WatchlistResponse'
+      example:
+        created: 1600250430
+        resources:
+        - datapoints:
+            date_of_birth: 1970-01-01
+            document_number: "010101010101"
+            first_names: Jessie
+            last_name: Smith
+          type: NATIONAL_ID_CARD
+        - datapoints:
+            date_of_birth: 1970-01-01
+            document_number: "010101010101"
+            first_names: Jessie
+            last_name: Smith
+          type: NATIONAL_ID_CARD
+        id: 00000000-0000-0000-0000-000000000000
+        updated: 1600250430
+        watchlist:
+          listings:
+            finanstilsynet:
+              url: https://www.finanstilsynet.dk
+              name: Denmark Finanstilsynet Foreign Regulators Warnings
+              aml_types:
+              - warning
+              listing_started_utc: 2020-02-17T00:00:00Z
+            "...": {}
+          types:
+          - adverse-media
+          - '...'
+          sources:
+          - african-development-bank
+          - '...'
+          media:
+          - url: http://www.macnn.com/searchcatnext/tag/Puccini/2
+            title: (no title)
+          clean: false
+        status: created
+    IdentityResource:
+      type: object
+      properties:
+        datapoints:
+          $ref: '#/components/schemas/DataPoints'
+        type:
+          $ref: '#/components/schemas/ResourceType'
+      example:
+        datapoints:
+          date_of_birth: 1970-01-01
+          document_number: "010101010101"
+          first_names: Jessie
+          last_name: Smith
+        type: NATIONAL_ID_CARD
+    ProjectSettings:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of the project
+          example: 00000000-0000-0000-0000-000000000000
+        slug:
+          type: string
+          description: slugs are meant to be a way to verify people just with the
+            link
+          example: passbase-demo
+        environment:
+          type: string
+          example: sandbox
+          enum:
+          - sandbox
+          - production
+        organization:
+          type: string
+          description: Name of the organization that owns this project
+          example: Passbase Inc.
+        customizations:
+          $ref: '#/components/schemas/ProjectSettings_customizations'
+        verification_steps:
+          type: array
+          description: |
+            List of the steps through which the user must go through to
+            complete their verification
+          example:
+          - type: email
+            document_types:
+            - EMAIL
+          - type: liveness_check
+            document_types:
+            - FACE_VIDEO
+          - type: country
+            document_types:
+            - COUNTRY
+          - type: identity_document_check
+            document_types:
+            - PASSPORT
+            - DRIVERS_LICENSE
+          - type: insurance_card_scan
+            document_types:
+            - HEALTH_INSURANCE_CARD
+          items:
+            $ref: '#/components/schemas/ProjectSettings_verification_steps'
+      example:
+        environment: sandbox
+        organization: Passbase Inc.
+        id: 00000000-0000-0000-0000-000000000000
+        slug: passbase-demo
+        customizations:
+          accent_color: '#FAFAFA'
+          button_color: '#1E1E1E'
+          font_family: Arial
+        verification_steps:
+        - type: email
+          document_types:
+          - EMAIL
+        - type: liveness_check
+          document_types:
+          - FACE_VIDEO
+        - type: country
+          document_types:
+          - COUNTRY
+        - type: identity_document_check
+          document_types:
+          - PASSPORT
+          - DRIVERS_LICENSE
+        - type: insurance_card_scan
+          document_types:
+          - HEALTH_INSURANCE_CARD
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email with which the user was created
+          example: jessie@example.com
+        identity_access_token:
+          type: string
+          description: |
+            Access token in the shape of a JsonWebToken used as a Bearer token
+            when submitting identity data
+          format: jwt
+          example: eyJhbGciOiJIUzI1NiIsI...
+        required_steps:
+          type: array
+          description: |
+            List of the steps through which the user must go through to
+            complete their verification
+          example:
+          - type: email
+            document_types:
+            - EMAIL
+          - type: liveness_check
+            document_types:
+            - FACE_VIDEO
+          - type: country
+            document_types:
+            - COUNTRY
+          - type: identity_document_check
+            document_types:
+            - PASSPORT
+            - DRIVERS_LICENSE
+          - type: insurance_card_scan
+            document_types:
+            - HEALTH_INSURANCE_CARD
+          items:
+            $ref: '#/components/schemas/ProjectSettings_verification_steps'
+    ResourceType:
+      type: string
+      description: All resource types that passbase supports
+      example: NATIONAL_ID_CARD
+      enum:
+      - PASSPORT
+      - DRIVERS_LICENSE
+      - NATIONAL_ID_CARD
+      - HEALTH_INSURANCE_CARD
+      - SELFIE_VIDEO
+      - PROOF_OF_ADDRESS
+      - EMAIL
+    WatchlistResponse:
+      type: object
+      properties:
+        clean:
+          type: boolean
+          description: Indicates whether the authentication watchlist check is clean
+            or not
+          example: false
+        listings:
+          type: object
+          description: Watchlist check findings
+          example:
+            finanstilsynet:
+              url: https://www.finanstilsynet.dk
+              name: Denmark Finanstilsynet Foreign Regulators Warnings
+              aml_types:
+              - warning
+              listing_started_utc: 2020-02-17T00:00:00Z
+            "...": {}
+        media:
+          type: array
+          description: List of media entries, with the date, title, and url parameters
+          example:
+          - url: http://www.macnn.com/searchcatnext/tag/Puccini/2
+            title: (no title)
+          items:
+            type: object
+        sources:
+          type: array
+          description: Array of listing sources (eg. sanction lists)
+          example:
+          - african-development-bank
+          - '...'
+          items:
+            type: string
+        types:
+          type: array
+          description: What kind of alert or warning is associated with the entity
+            (eg. sanction, pep, warning)
+          example:
+          - adverse-media
+          - '...'
+          items:
+            type: string
+      description: |
+        Monitor politically exposed persons (PEPs), and track risky behavior
+        with adverse media and watchlist checks for a comprehensive customer
+        due diligence and Anti Money Laundering (AML) and Know Your Customer
+        (KYC) program.
+      example:
+        listings:
+          finanstilsynet:
+            url: https://www.finanstilsynet.dk
+            name: Denmark Finanstilsynet Foreign Regulators Warnings
+            aml_types:
+            - warning
+            listing_started_utc: 2020-02-17T00:00:00Z
+          "...": {}
+        types:
+        - adverse-media
+        - '...'
+        sources:
+        - african-development-bank
+        - '...'
+        media:
+        - url: http://www.macnn.com/searchcatnext/tag/Puccini/2
+          title: (no title)
+        clean: false
+    Cursor:
+      type: object
+      properties:
+        next:
+          type: string
+          description: opaque token to pass back to the API to get the next batch
+            of data
+          nullable: true
+          example: aWQ6NDA3MQ==
+      description: |
+        object containing a cursor representing whether the data
+        is fully loaded or not
+      nullable: false
+      example:
+        next: aWQ6NDA3MQ==
+    PaginatedIdentities:
+      type: object
+      properties:
+        cursor:
+          $ref: '#/components/schemas/Cursor'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Identity'
+      example:
+        cursor:
+          next: aWQ6NDA3MQ==
+        data:
+        - created: 1600250430
+          resources:
+          - datapoints:
+              date_of_birth: 1970-01-01
+              document_number: "010101010101"
+              first_names: Jessie
+              last_name: Smith
+            type: NATIONAL_ID_CARD
+          - datapoints:
+              date_of_birth: 1970-01-01
+              document_number: "010101010101"
+              first_names: Jessie
+              last_name: Smith
+            type: NATIONAL_ID_CARD
+          id: 00000000-0000-0000-0000-000000000000
+          updated: 1600250430
+          watchlist:
+            listings:
+              finanstilsynet:
+                url: https://www.finanstilsynet.dk
+                name: Denmark Finanstilsynet Foreign Regulators Warnings
+                aml_types:
+                - warning
+                listing_started_utc: 2020-02-17T00:00:00Z
+              "...": {}
+            types:
+            - adverse-media
+            - '...'
+            sources:
+            - african-development-bank
+            - '...'
+            media:
+            - url: http://www.macnn.com/searchcatnext/tag/Puccini/2
+              title: (no title)
+            clean: false
+          status: created
+        - created: 1600250430
+          resources:
+          - datapoints:
+              date_of_birth: 1970-01-01
+              document_number: "010101010101"
+              first_names: Jessie
+              last_name: Smith
+            type: NATIONAL_ID_CARD
+          - datapoints:
+              date_of_birth: 1970-01-01
+              document_number: "010101010101"
+              first_names: Jessie
+              last_name: Smith
+            type: NATIONAL_ID_CARD
+          id: 00000000-0000-0000-0000-000000000000
+          updated: 1600250430
+          watchlist:
+            listings:
+              finanstilsynet:
+                url: https://www.finanstilsynet.dk
+                name: Denmark Finanstilsynet Foreign Regulators Warnings
+                aml_types:
+                - warning
+                listing_started_utc: 2020-02-17T00:00:00Z
+              "...": {}
+            types:
+            - adverse-media
+            - '...'
+            sources:
+            - african-development-bank
+            - '...'
+            media:
+            - url: http://www.macnn.com/searchcatnext/tag/Puccini/2
+              title: (no title)
+            clean: false
+          status: created
+    PaginatedResources:
+      type: object
+      properties:
+        cursor:
+          $ref: '#/components/schemas/Cursor'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+      example:
+        cursor:
+          next: aWQ6NDA3MQ==
+        data:
+        - created: 1600250430
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: NATIONAL_ID_CARD
+          updated: 1600250430
+          resource_files:
+          - created: 1600250430
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            page: 0
+            type: face_video
+            updated: 1600250430
+          - created: 1600250430
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            page: 0
+            type: face_video
+            updated: 1600250430
+          status: created
+        - created: 1600250430
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          type: NATIONAL_ID_CARD
+          updated: 1600250430
+          resource_files:
+          - created: 1600250430
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            page: 0
+            type: face_video
+            updated: 1600250430
+          - created: 1600250430
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            page: 0
+            type: face_video
+            updated: 1600250430
+          status: created
+    DataPoints:
+      type: object
+      description: |
+        Dynamic key/value hashmap of the data extracted from the resource.
+      example:
+        date_of_birth: 1970-01-01
+        document_number: "010101010101"
+        first_names: Jessie
+        last_name: Smith
+      x-description: test description
+    ResourceFilesInput_inner:
+      type: object
+      properties:
+        type:
+          type: string
+        file:
+          type: string
+          format: binary
+    ResourceFiles_inner:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID representing a resource file
+          format: uuid
+        type:
+          type: string
+          enum:
+          - face_video
+          - document_image
+        page:
+          type: integer
+          description: |
+            Page number of the document. Generally 1 would represent the
+            front of a document, and 2 might represent the back of the same
+            document.
+        created:
+          type: integer
+          description: Unix-timestamp of when the resource was created
+          format: int64
+          example: 1600250430
+        updated:
+          type: integer
+          description: Unix-timestamp of when the resource was updated
+          format: int64
+          example: 1600250430
+      example:
+        created: 1600250430
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        page: 0
+        type: face_video
+        updated: 1600250430
+    ProjectSettings_customizations:
+      type: object
+      properties:
+        button_color:
+          type: string
+          description: \"Verify Me\" button background color
+          example: '#1E1E1E'
+        accent_color:
+          type: string
+          description: Accent color during the verification flow (button, breadcrumb,
+            etc…)
+          example: '#FAFAFA'
+        font_family:
+          type: string
+          description: Font used in the verification flow
+          example: Arial
+          enum:
+          - Arial
+          - Exo
+          - Open Sans
+          - Lato
+          - Baskerville
+      description: |
+        Object representing the UI customization done in app.passbase.com
+        to change the button color and other UI details
+      example:
+        accent_color: '#FAFAFA'
+        button_color: '#1E1E1E'
+        font_family: Arial
+    ProjectSettings_verification_steps:
+      type: object
+      properties:
+        step:
+          type: string
+          example: liveness_check
+        resource_types:
+          type: array
+          example:
+          - DRIVERS_LICENSE
+          - NATIONAL_ID_CARD
+          items:
+            $ref: '#/components/schemas/ResourceType'
+  securitySchemes:
+    IdentityAccessToken:
+      type: http
+      description: |
+        <span class="subtext">
+          Access token in the shape of a JsonWebToken (JWT), to be used as a Bearer token.
+          <br/>
+          JWT is an open, industry-wide standard that defines a compact and self-contained
+          way for securely transmitting information between parties as a JSON object.
+          This information can be verified and trusted because it is digitally signed.
+          <br/><br/>
+          In our systems, it represents the user's agreement to share their data with a
+          third-party.
+        </span>
+      scheme: bearer
+      bearerFormat: JWT
+    SecretApiKey:
+      type: apiKey
+      description: |
+        <span class="subtext">
+          Each project has one Publishable API access key (see below), and one
+          Secret API access key.
+          The secret API access key, used for server-to-server communication,
+          is used to fetch sensitive data that you already have access to.
+
+          ⚠️ <b>Be very careful with the secret API key.</b>
+          Never share it or send it through unencrypted communication methods!
+        </span>
+      name: X-API-KEY
+      in: header
+    PublishableApiKey:
+      type: apiKey
+      description: |
+        <span class="subtext">
+          Publishable API access key is used by the verification flow (Passbase
+          button), to verify and re-authenticate users.
+          This key can be safely be part of client bundles or artifacts
+          (eg: Javascript bundle, iOS/Android apps).
+        </span>
+      name: X-API-KEY
+      in: header
+x-tagGroups:
+- name: Endpoints
+  tags:
+  - Identity
+  - Project
+- name: Models
+  tags:
+  - resource_model
+  - identity_model
+  - user_model
+  - project_settings_model
