@@ -1,7 +1,7 @@
 1. Passbase expects Go version to be go1.15+
 
 ```sh
-go get github.com/passbase/passbase-go
+go get github.com/passbase/passbase-go@v1.0.0
 ```
 
 2. Import `passbase` into your app
