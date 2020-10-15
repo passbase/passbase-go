@@ -24,11 +24,11 @@ info:
 
     | Term                                    | Description |
     |-----------------------------------------|-------------|
+    | [Identity](#tag/identity_model)         | A set of Data points and Resources related to and owned by one single User. This data can be accessed by you through a Verification. |
     | Data points                             | Any data about a User extracted from a Resource (E.g. Passport Number, or Age). |
     | [Resource](#tag/resource_model)         | A source document used to generate the Data points for a User (E.g. Passport). |
-    | [Identity](#tag/identity_model)         | A set of Data points and Resources related to and owned by one single User. This data can be accessed by you through a Verification. |
     | [User](#tag/user_model)                 | The owner of an email address associated with an Identity. |
-    | Verification (signup)                   | A transaction through which a User consents to share Data points with you. If the Data points you request are not already available in the User's Identity, the Passbase client will ask the User to submit the necessary Resource required to extract them. |
+    | Verification                            | A transaction through which a User consents to share Data points with you. If the Data points you request are not already available in the User's Identity, the Passbase client will ask the User to submit the necessary Resource required to extract them. |
     | Re-authentication (login)               | A transaction through which a User can certify the ownership of Personal data previously shared through an Authentication. |
 
 
@@ -474,21 +474,24 @@ components:
             List of the steps through which the user must go through to
             complete their verification
           example:
-          - type: email
-            document_types:
+          - step: email
+            resource_types:
             - EMAIL
-          - type: liveness_check
-            document_types:
+          - step: liveness_check
+            resource_types:
             - FACE_VIDEO
-          - type: country
-            document_types:
-            - COUNTRY
-          - type: identity_document_check
-            document_types:
+          - step: country
+            resource_types:
+            - de
+            - us
+            - gb
+            - ca
+          - step: identity_document_check
+            resource_types:
             - PASSPORT
             - DRIVERS_LICENSE
-          - type: insurance_card_scan
-            document_types:
+          - step: insurance_card_scan
+            resource_types:
             - HEALTH_INSURANCE_CARD
           items:
             $ref: '#/components/schemas/ProjectSettings_verification_steps'
@@ -502,21 +505,24 @@ components:
           button_color: '#1E1E1E'
           font_family: Arial
         verification_steps:
-        - type: email
-          document_types:
+        - step: email
+          resource_types:
           - EMAIL
-        - type: liveness_check
-          document_types:
+        - step: liveness_check
+          resource_types:
           - FACE_VIDEO
-        - type: country
-          document_types:
-          - COUNTRY
-        - type: identity_document_check
-          document_types:
+        - step: country
+          resource_types:
+          - de
+          - us
+          - gb
+          - ca
+        - step: identity_document_check
+          resource_types:
           - PASSPORT
           - DRIVERS_LICENSE
-        - type: insurance_card_scan
-          document_types:
+        - step: insurance_card_scan
+          resource_types:
           - HEALTH_INSURANCE_CARD
     User:
       type: object
@@ -538,21 +544,24 @@ components:
             List of the steps through which the user must go through to
             complete their verification
           example:
-          - type: email
-            document_types:
+          - step: email
+            resource_types:
             - EMAIL
-          - type: liveness_check
-            document_types:
+          - step: liveness_check
+            resource_types:
             - FACE_VIDEO
-          - type: country
-            document_types:
-            - COUNTRY
-          - type: identity_document_check
-            document_types:
+          - step: country
+            resource_types:
+            - de
+            - us
+            - vn
+            - zn
+          - step: identity_document_check
+            resource_types:
             - PASSPORT
             - DRIVERS_LICENSE
-          - type: insurance_card_scan
-            document_types:
+          - step: insurance_card_scan
+            resource_types:
             - HEALTH_INSURANCE_CARD
           items:
             $ref: '#/components/schemas/ProjectSettings_verification_steps'
@@ -560,14 +569,6 @@ components:
       type: string
       description: All resource types that passbase supports
       example: NATIONAL_ID_CARD
-      enum:
-      - PASSPORT
-      - DRIVERS_LICENSE
-      - NATIONAL_ID_CARD
-      - HEALTH_INSURANCE_CARD
-      - SELFIE_VIDEO
-      - PROOF_OF_ADDRESS
-      - EMAIL
     WatchlistResponse:
       type: object
       properties:

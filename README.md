@@ -45,7 +45,6 @@ Class | Method | HTTP request | Description
  - [ResourceFilesInner](docs/ResourceFilesInner.md)
  - [ResourceFilesInputInner](docs/ResourceFilesInputInner.md)
  - [ResourceInput](docs/ResourceInput.md)
- - [ResourceType](docs/ResourceType.md)
  - [User](docs/User.md)
  - [WatchlistResponse](docs/WatchlistResponse.md)
 
