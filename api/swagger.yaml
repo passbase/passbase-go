@@ -42,7 +42,7 @@ info:
     </span>
   version: 1.0.0
   x-logo:
-    url: /img/logo.png
+    url: ./img/logo.png
     backgroundColor: '#F5F7F9'
     altText: Passbase Docs logo
 servers:
@@ -134,7 +134,7 @@ paths:
       - Identity
       summary: Get identity
       description: Retrieve an identity by providing the identity ID.
-      operationId: getIdentyById
+      operationId: getIdentityById
       parameters:
       - name: id
         in: path
@@ -151,17 +151,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Identity'
-                x-content-type: application/json
+                $ref: '#/components/schemas/Identity'
         "400":
           description: bad input parameter
         "401":
           description: your api_key is invalid
         "404":
           description: identity not found with the given ID
-  /identities/{id}/resources:
+  /identity/{id}/resources:
     get:
       tags:
       - Identity
@@ -207,7 +204,7 @@ paths:
           description: your api_key is invalid
         "404":
           description: identity not found with the given ID
-  /identities/{id}/resource/{resource_id}:
+  /identity/{id}/resources/{resource_id}:
     get:
       tags:
       - Identity
@@ -850,12 +847,6 @@ components:
           type: string
           description: Font used in the verification flow
           example: Arial
-          enum:
-          - Arial
-          - Exo
-          - Open Sans
-          - Lato
-          - Baskerville
       description: |
         Object representing the UI customization done in app.passbase.com
         to change the button color and other UI details

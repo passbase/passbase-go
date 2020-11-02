@@ -23,10 +23,10 @@ All URIs are relative to *https://api.passbase.com/verification/v1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*IdentityApi* | [**GetIdentityResourceById**](docs/IdentityApi.md#getidentityresourcebyid) | **Get** /identities/{id}/resource/{resource_id} | Get resource
-*IdentityApi* | [**GetIdentyById**](docs/IdentityApi.md#getidentybyid) | **Get** /identities/{id} | Get identity
+*IdentityApi* | [**GetIdentityById**](docs/IdentityApi.md#getidentitybyid) | **Get** /identities/{id} | Get identity
+*IdentityApi* | [**GetIdentityResourceById**](docs/IdentityApi.md#getidentityresourcebyid) | **Get** /identity/{id}/resources/{resource_id} | Get resource
 *IdentityApi* | [**ListIdentities**](docs/IdentityApi.md#listidentities) | **Get** /identities | List identities
-*IdentityApi* | [**ListIdentityResources**](docs/IdentityApi.md#listidentityresources) | **Get** /identities/{id}/resources | List resources
+*IdentityApi* | [**ListIdentityResources**](docs/IdentityApi.md#listidentityresources) | **Get** /identity/{id}/resources | List resources
 *ProjectApi* | [**GetSettings**](docs/ProjectApi.md#getsettings) | **Get** /settings | Get project settings
 
 ## Documentation For Models

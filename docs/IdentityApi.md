@@ -4,10 +4,38 @@ All URIs are relative to *https://api.passbase.com/verification/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetIdentityResourceById**](IdentityApi.md#GetIdentityResourceById) | **Get** /identities/{id}/resource/{resource_id} | Get resource
-[**GetIdentyById**](IdentityApi.md#GetIdentyById) | **Get** /identities/{id} | Get identity
+[**GetIdentityById**](IdentityApi.md#GetIdentityById) | **Get** /identities/{id} | Get identity
+[**GetIdentityResourceById**](IdentityApi.md#GetIdentityResourceById) | **Get** /identity/{id}/resources/{resource_id} | Get resource
 [**ListIdentities**](IdentityApi.md#ListIdentities) | **Get** /identities | List identities
-[**ListIdentityResources**](IdentityApi.md#ListIdentityResources) | **Get** /identities/{id}/resources | List resources
+[**ListIdentityResources**](IdentityApi.md#ListIdentityResources) | **Get** /identity/{id}/resources | List resources
+
+# **GetIdentityById**
+> Identity GetIdentityById(ctx, id)
+Get identity
+
+Retrieve an identity by providing the identity ID.
+
+### Required Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **id** | [**string**](.md)| Unique ID of the identity to return | 
+
+### Return type
+
+[**Identity**](Identity.md)
+
+### Authorization
+
+[SecretApiKey](../README.md#SecretApiKey)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **GetIdentityResourceById**
 > Resource GetIdentityResourceById(ctx, id, resourceId)
@@ -26,34 +54,6 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Resource**](Resource.md)
-
-### Authorization
-
-[SecretApiKey](../README.md#SecretApiKey)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **GetIdentyById**
-> []Identity GetIdentyById(ctx, id)
-Get identity
-
-Retrieve an identity by providing the identity ID.
-
-### Required Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **id** | [**string**](.md)| Unique ID of the identity to return | 
-
-### Return type
-
-[**[]Identity**](Identity.md)
 
 ### Authorization
 
