@@ -4,7 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** | Unique ID of the project | [optional] [default to null]
-**Slug** | **string** | slugs are meant to be a way to verify people just with the link | [optional] [default to null]
+**Slug** | **string** | Slugs are meant to be a way to verify people just with the link | [optional] [default to null]
 **Environment** | **string** |  | [optional] [default to null]
 **Organization** | **string** | Name of the organization that owns this project | [optional] [default to null]
 **Customizations** | [***ProjectSettingsCustomizations**](ProjectSettings_customizations.md) |  | [optional] [default to null]

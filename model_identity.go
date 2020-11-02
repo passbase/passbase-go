@@ -13,6 +13,9 @@ type Identity struct {
 	Id string `json:"id,omitempty"`
 	// Current state of the identity in Passbase's systems
 	Status string `json:"status,omitempty"`
+	Owner *IdentityOwner `json:"owner,omitempty"`
+	// Float between 0 and 1 representing our confidence that this identity is valid. 0 meaning we couldn't verify any of the information provided with accuracy, and 1 absolute confidence.
+	Score float64 `json:"score,omitempty"`
 	// Unix-timestamp of when the identity was created
 	Created int64 `json:"created,omitempty"`
 	// Unix-timestamp of when the identity was updated

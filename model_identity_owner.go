@@ -8,15 +8,11 @@
  */
 package passbase
 
-type ProjectSettings struct {
-	// Unique ID of the project
-	Id string `json:"id,omitempty"`
-	// Slugs are meant to be a way to verify people just with the link
-	Slug string `json:"slug,omitempty"`
-	Environment string `json:"environment,omitempty"`
-	// Name of the organization that owns this project
-	Organization string `json:"organization,omitempty"`
-	Customizations *ProjectSettingsCustomizations `json:"customizations,omitempty"`
-	// List of the steps through which the user must go through to complete their verification 
-	VerificationSteps []ProjectSettingsVerificationSteps `json:"verification_steps,omitempty"`
+type IdentityOwner struct {
+	// Email of the user the identity belongs to
+	Email string `json:"email,omitempty"`
+	// First name of the user the identity belongs to
+	FirstName string `json:"first_name,omitempty"`
+	// Last name of the user the identity belongs to
+	LastName string `json:"last_name,omitempty"`
 }

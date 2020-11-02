@@ -373,6 +373,15 @@ components:
           - pending
           - approved
           - declined
+        owner:
+          $ref: '#/components/schemas/IdentityOwner'
+        score:
+          type: number
+          description: Float between 0 and 1 representing our confidence that this
+            identity is valid. 0 meaning we couldn't verify any of the information
+            provided with accuracy, and 1 absolute confidence.
+          format: double
+          example: 0.01000000000000012
         created:
           type: integer
           description: Unix-timestamp of when the identity was created
@@ -391,6 +400,11 @@ components:
         watchlist:
           $ref: '#/components/schemas/WatchlistResponse'
       example:
+        owner:
+          last_name: Doe
+          first_name: John
+          email: john.doe@example.com
+        score: 0.01000000000000012
         created: 1600250430
         resources:
         - datapoints:
@@ -427,6 +441,25 @@ components:
             title: (no title)
           clean: false
         status: created
+    IdentityOwner:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email of the user the identity belongs to
+          example: john.doe@example.com
+        first_name:
+          type: string
+          description: First name of the user the identity belongs to
+          example: John
+        last_name:
+          type: string
+          description: Last name of the user the identity belongs to
+          example: Doe
+      example:
+        last_name: Doe
+        first_name: John
+        email: john.doe@example.com
     IdentityResource:
       type: object
       properties:
@@ -450,7 +483,7 @@ components:
           example: 00000000-0000-0000-0000-000000000000
         slug:
           type: string
-          description: slugs are meant to be a way to verify people just with the
+          description: Slugs are meant to be a way to verify people just with the
             link
           example: passbase-demo
         environment:
@@ -662,7 +695,12 @@ components:
         cursor:
           next: aWQ6NDA3MQ==
         data:
-        - created: 1600250430
+        - owner:
+            last_name: Doe
+            first_name: John
+            email: john.doe@example.com
+          score: 0.01000000000000012
+          created: 1600250430
           resources:
           - datapoints:
               date_of_birth: 1970-01-01
@@ -698,7 +736,12 @@ components:
               title: (no title)
             clean: false
           status: created
-        - created: 1600250430
+        - owner:
+            last_name: Doe
+            first_name: John
+            email: john.doe@example.com
+          score: 0.01000000000000012
+          created: 1600250430
           resources:
           - datapoints:
               date_of_birth: 1970-01-01
