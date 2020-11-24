@@ -242,6 +242,54 @@ paths:
           description: your api_key is invalid
         "404":
           description: resource not found for the given resource ID
+  /identity/{id}/resources/{resource_id}/resource_files/{resource_file_id}:
+    get:
+      tags:
+      - Identity
+      summary: Get resource file
+      description: |
+        Get a raw resource file attached to an identity by providing the resource ID
+        and the resource file ID. This is a protected route and you'll need a
+        specific government authorization to access it.
+      operationId: getIdentityResourceFileById
+      parameters:
+      - name: id
+        in: path
+        description: Identity id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: resource_id
+        in: path
+        description: Resource id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: resource_file_id
+        in: path
+        description: Resource file id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceFile'
+        "400":
+          description: bad input parameter
+        "401":
+          description: your api_key is invalid
+        "404":
+          description: resource not found for the given resource file ID
   /settings:
     get:
       tags:
@@ -357,6 +405,11 @@ components:
           type: string
           description: 'Raw bytes: the actual file'
           format: binary
+      example:
+        file: ""
+        created: 1600250430
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        updated: 1600250430
     Identity:
       type: object
       properties:

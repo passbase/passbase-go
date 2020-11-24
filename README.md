@@ -25,6 +25,7 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *IdentityApi* | [**GetIdentityById**](docs/IdentityApi.md#getidentitybyid) | **Get** /identities/{id} | Get identity
 *IdentityApi* | [**GetIdentityResourceById**](docs/IdentityApi.md#getidentityresourcebyid) | **Get** /identity/{id}/resources/{resource_id} | Get resource
+*IdentityApi* | [**GetIdentityResourceFileById**](docs/IdentityApi.md#getidentityresourcefilebyid) | **Get** /identity/{id}/resources/{resource_id}/resource_files/{resource_file_id} | Get resource file
 *IdentityApi* | [**ListIdentities**](docs/IdentityApi.md#listidentities) | **Get** /identities | List identities
 *IdentityApi* | [**ListIdentityResources**](docs/IdentityApi.md#listidentityresources) | **Get** /identity/{id}/resources | List resources
 *ProjectApi* | [**GetSettings**](docs/ProjectApi.md#getsettings) | **Get** /settings | Get project settings

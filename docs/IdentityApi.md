@@ -6,6 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetIdentityById**](IdentityApi.md#GetIdentityById) | **Get** /identities/{id} | Get identity
 [**GetIdentityResourceById**](IdentityApi.md#GetIdentityResourceById) | **Get** /identity/{id}/resources/{resource_id} | Get resource
+[**GetIdentityResourceFileById**](IdentityApi.md#GetIdentityResourceFileById) | **Get** /identity/{id}/resources/{resource_id}/resource_files/{resource_file_id} | Get resource file
 [**ListIdentities**](IdentityApi.md#ListIdentities) | **Get** /identities | List identities
 [**ListIdentityResources**](IdentityApi.md#ListIdentityResources) | **Get** /identity/{id}/resources | List resources
 
@@ -54,6 +55,36 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Resource**](Resource.md)
+
+### Authorization
+
+[SecretApiKey](../README.md#SecretApiKey)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **GetIdentityResourceFileById**
+> ResourceFile GetIdentityResourceFileById(ctx, id, resourceId, resourceFileId)
+Get resource file
+
+Get a raw resource file attached to an identity by providing the resource ID and the resource file ID. This is a protected route and you'll need a specific government authorization to access it. 
+
+### Required Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **id** | **string**| Identity id | 
+  **resourceId** | **string**| Resource id | 
+  **resourceFileId** | **string**| Resource file id | 
+
+### Return type
+
+[**ResourceFile**](ResourceFile.md)
 
 ### Authorization
 
