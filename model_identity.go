@@ -22,5 +22,7 @@ type Identity struct {
 	Updated int64 `json:"updated,omitempty"`
 	// resources attached to a verification
 	Resources []IdentityResource `json:"resources,omitempty"`
+	// Customer defined arbitrary payload initially passed through the client-sdk
+	Metadata *interface{} `json:"metadata,omitempty"`
 	Watchlist *WatchlistResponse `json:"watchlist,omitempty"`
 }

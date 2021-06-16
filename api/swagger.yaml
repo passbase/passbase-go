@@ -1,70 +1,54 @@
 openapi: 3.0.0
 info:
   title: Verification API
-  description: |
-    # Introduction
-
-    <span class="subtext">
-    Welcome to the Passbase Verifications API docs. This documentation will
-    help you understand our models and the Verification API with its endpoints.
-    Based on this you can build your own system (i.e. verification) and hook it
-    up to Passbase.
-
-    In case of feedback or questions you can reach us under this email address: [developer@passbase.com](mailto:developer@passbase.com).
-    </span>
-
-    A User submits a video selfie and valid identifying __Resources__ during a
-    __Verification__ guided by the Passbase client-side integration. Once all
-    the necessary __Resources__ are submitted, __Data points__ are extracted,
-    digitized, and authenticated. These Data points then becomes part of the
-    User's __Identity__. The User then consents to share __Resources__ and/or
-    __Data points__ from their Identity with you. This information is passed
-    to you and can be used to make decisions about a User (e.g. activate account).
-    This table below explains our terminology further.
-
-    | Term                                    | Description |
-    |-----------------------------------------|-------------|
-    | [Identity](#tag/identity_model)         | A set of Data points and Resources related to and owned by one single User. This data can be accessed by you through a Verification. |
-    | Data points                             | Any data about a User extracted from a Resource (E.g. Passport Number, or Age). |
-    | [Resource](#tag/resource_model)         | A source document used to generate the Data points for a User (E.g. Passport). |
-    | [User](#tag/user_model)                 | The owner of an email address associated with an Identity. |
-    | Verification                            | A transaction through which a User consents to share Data points with you. If the Data points you request are not already available in the User's Identity, the Passbase client will ask the User to submit the necessary Resource required to extract them. |
-    | Re-authentication (login)               | A transaction through which a User can certify the ownership of Personal data previously shared through an Authentication. |
-
-
-    # Authentication
-
-    <span class="subtext">
-    There are two forms of authentication for the API:
-    <br/>&bull; API Key
-    <br/>&bull; Bearer JWT Token
-
-    </span>
+  description: "# Introduction\n\n<span class=\"subtext\">\nWelcome to the Passbase\
+    \ Verifications API docs. This documentation will\nhelp you understand our models\
+    \ and the Verification API with its endpoints.\nBased on this you can build your\
+    \ own system (i.e. verification) and hook it\nup to Passbase.\n\nIn case of feedback\
+    \ or questions you can reach us under this email address: [developer@passbase.com](mailto:developer@passbase.com).\n\
+    </span>\n\nA User submits a video selfie and valid identifying __Resources__ during\
+    \ a\n__Verification__ guided by the Passbase client-side integration. Once all\n\
+    the necessary __Resources__ are submitted, __Data points__ are extracted,\ndigitized,\
+    \ and authenticated. These Data points then becomes part of the\nUser's __Identity__.\
+    \ The User then consents to share __Resources__ and/or\n__Data points__ from their\
+    \ Identity with you. This information is passed\nto you and can be used to make\
+    \ decisions about a User (e.g. activate account).\nThis table below explains our\
+    \ terminology further.\n\n| Term                                    | Description\
+    \ |\n|-----------------------------------------|-------------|\n| [Identity](#tag/identity_model)\
+    \         | A set of Data points and Resources related to and owned by one single\
+    \ User. This data can be accessed by you through a Verification. |\n| Data points\
+    \                             | Any data about a User extracted from a Resource\
+    \ (E.g. Passport Number, or Age). |\n| [Resource](#tag/resource_model)       \
+    \  | A source document used to generate the Data points for a User (E.g. Passport).\
+    \ |\n| [User](#tag/user_model)                 | The owner of an email address\
+    \ associated with an Identity. |\n| Verification                            |\
+    \ A transaction through which a User consents to share Data points with you. If\
+    \ the Data points you request are not already available in the User's Identity,\
+    \ the Passbase client will ask the User to submit the necessary Resource required\
+    \ to extract them. |\n| Re-authentication (login)               | A transaction\
+    \ through which a User can certify the ownership of Personal data previously shared\
+    \ through an Authentication. |\n\n\n# Authentication\n\n<span class=\"subtext\"\
+    >\nThere are two forms of authentication for the API:\n<br/>&bull; API Key\n<br/>&bull;\
+    \ Bearer JWT Token\n\n</span>\n"
   version: 1.0.0
   x-logo:
     url: ./img/logo.png
     backgroundColor: '#F5F7F9'
     altText: Passbase Docs logo
 servers:
-- url: https://api.passbase.com/verification/v1
+- url: https://api.passbase.com/verification/v2
 security:
 - SecretApiKey: []
 tags:
 - name: Identity
-  description: |
-    <span class="subtext">
-    We distinguish between a user and his digital identity.
-
-    A user has to submit resources, like documents about himself, in order to create a valid
-    digital identity. This information can be used to prove if the user is who he claims to be
-    and even uncover potential bad actors.
-
-    A verification is in the `"processing"` state when the Passbase Team is working on it and in the
-    `"pending"` one when it's the customers turn to accept or reject the verification.
-
-    Once the user was verified he can use his saved identity for gaining
-    access to the provided services of a customer.
-    </span>
+  description: "<span class=\"subtext\">\nWe distinguish between a user and his digital\
+    \ identity.\n\nA user has to submit resources, like documents about himself, in\
+    \ order to create a valid\ndigital identity. This information can be used to prove\
+    \ if the user is who he claims to be\nand even uncover potential bad actors.\n\
+    \nA verification is in the `\"processing\"` state when the Passbase Team is working\
+    \ on it and in the\n`\"pending\"` one when it's the customers turn to accept or\
+    \ reject the verification.\n\nOnce the user was verified he can use his saved\
+    \ identity for gaining\naccess to the provided services of a customer.\n</span>\n"
 - name: User
 - name: Project
   description: |
@@ -403,7 +387,7 @@ components:
           example: 1600250430
         file:
           type: string
-          description: 'Raw bytes: the actual file'
+          description: "Raw bytes: the actual file"
           format: binary
       example:
         file: ""
@@ -430,9 +414,9 @@ components:
           $ref: '#/components/schemas/IdentityOwner'
         score:
           type: number
-          description: Float between 0 and 1 representing our confidence that this
-            identity is valid. 0 meaning we couldn't verify any of the information
-            provided with accuracy, and 1 absolute confidence.
+          description: "Float between 0 and 1 representing our confidence that this\
+            \ identity is valid. 0 meaning we couldn't verify any of the information\
+            \ provided with accuracy, and 1 absolute confidence."
           format: double
           example: 0.01000000000000012
         created:
@@ -450,6 +434,12 @@ components:
           description: resources attached to a verification
           items:
             $ref: '#/components/schemas/IdentityResource'
+        metadata:
+          type: object
+          description: Customer defined arbitrary payload initially passed through
+            the client-sdk
+          example:
+            foo: bar
         watchlist:
           $ref: '#/components/schemas/WatchlistResponse'
       example:
@@ -458,6 +448,8 @@ components:
           first_name: John
           email: john.doe@example.com
         score: 0.01000000000000012
+        metadata:
+          foo: bar
         created: 1600250430
         resources:
         - datapoints:
@@ -673,7 +665,7 @@ components:
             "...": {}
         media:
           type: array
-          description: List of media entries, with the date, title, and url parameters
+          description: "List of media entries, with the date, title, and url parameters"
           example:
           - url: http://www.macnn.com/searchcatnext/tag/Puccini/2
             title: (no title)
@@ -689,18 +681,17 @@ components:
             type: string
         types:
           type: array
-          description: What kind of alert or warning is associated with the entity
-            (eg. sanction, pep, warning)
+          description: "What kind of alert or warning is associated with the entity\
+            \ (eg. sanction, pep, warning)"
           example:
           - adverse-media
           - '...'
           items:
             type: string
-      description: |
-        Monitor politically exposed persons (PEPs), and track risky behavior
-        with adverse media and watchlist checks for a comprehensive customer
-        due diligence and Anti Money Laundering (AML) and Know Your Customer
-        (KYC) program.
+      description: "Monitor politically exposed persons (PEPs), and track risky behavior\n\
+        with adverse media and watchlist checks for a comprehensive customer\ndue\
+        \ diligence and Anti Money Laundering (AML) and Know Your Customer\n(KYC)\
+        \ program.\n"
       example:
         listings:
           finanstilsynet:
@@ -753,6 +744,8 @@ components:
             first_name: John
             email: john.doe@example.com
           score: 0.01000000000000012
+          metadata:
+            foo: bar
           created: 1600250430
           resources:
           - datapoints:
@@ -794,6 +787,8 @@ components:
             first_name: John
             email: john.doe@example.com
           score: 0.01000000000000012
+          metadata:
+            foo: bar
           created: 1600250430
           resources:
           - datapoints:
@@ -907,10 +902,8 @@ components:
           - document_image
         page:
           type: integer
-          description: |
-            Page number of the document. Generally 1 would represent the
-            front of a document, and 2 might represent the back of the same
-            document.
+          description: "Page number of the document. Generally 1 would represent the\n\
+            front of a document, and 2 might represent the back of the same\ndocument.\n"
         created:
           type: integer
           description: Unix-timestamp of when the resource was created
@@ -936,8 +929,8 @@ components:
           example: '#1E1E1E'
         accent_color:
           type: string
-          description: Accent color during the verification flow (button, breadcrumb,
-            etc…)
+          description: "Accent color during the verification flow (button, breadcrumb,\
+            \ etc…)"
           example: '#FAFAFA'
         font_family:
           type: string
@@ -966,42 +959,31 @@ components:
   securitySchemes:
     IdentityAccessToken:
       type: http
-      description: |
-        <span class="subtext">
-          Access token in the shape of a JsonWebToken (JWT), to be used as a Bearer token.
-          <br/>
-          JWT is an open, industry-wide standard that defines a compact and self-contained
-          way for securely transmitting information between parties as a JSON object.
-          This information can be verified and trusted because it is digitally signed.
-          <br/><br/>
-          In our systems, it represents the user's agreement to share their data with a
-          third-party.
-        </span>
+      description: "<span class=\"subtext\">\n  Access token in the shape of a JsonWebToken\
+        \ (JWT), to be used as a Bearer token.\n  <br/>\n  JWT is an open, industry-wide\
+        \ standard that defines a compact and self-contained\n  way for securely transmitting\
+        \ information between parties as a JSON object.\n  This information can be\
+        \ verified and trusted because it is digitally signed.\n  <br/><br/>\n  In\
+        \ our systems, it represents the user's agreement to share their data with\
+        \ a\n  third-party.\n</span>\n"
       scheme: bearer
       bearerFormat: JWT
     SecretApiKey:
       type: apiKey
-      description: |
-        <span class="subtext">
-          Each project has one Publishable API access key (see below), and one
-          Secret API access key.
-          The secret API access key, used for server-to-server communication,
-          is used to fetch sensitive data that you already have access to.
-
-          ⚠️ <b>Be very careful with the secret API key.</b>
-          Never share it or send it through unencrypted communication methods!
-        </span>
+      description: "<span class=\"subtext\">\n  Each project has one Publishable API\
+        \ access key (see below), and one\n  Secret API access key.\n  The secret\
+        \ API access key, used for server-to-server communication,\n  is used to fetch\
+        \ sensitive data that you already have access to.\n\n  ⚠️ <b>Be very careful\
+        \ with the secret API key.</b>\n  Never share it or send it through unencrypted\
+        \ communication methods!\n</span>\n"
       name: X-API-KEY
       in: header
     PublishableApiKey:
       type: apiKey
-      description: |
-        <span class="subtext">
-          Publishable API access key is used by the verification flow (Passbase
-          button), to verify and re-authenticate users.
-          This key can be safely be part of client bundles or artifacts
-          (eg: Javascript bundle, iOS/Android apps).
-        </span>
+      description: "<span class=\"subtext\">\n  Publishable API access key is used\
+        \ by the verification flow (Passbase\n  button), to verify and re-authenticate\
+        \ users.\n  This key can be safely be part of client bundles or artifacts\n\
+        \  (eg: Javascript bundle, iOS/Android apps).\n</span>\n"
       name: X-API-KEY
       in: header
 x-tagGroups:

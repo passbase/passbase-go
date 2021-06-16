@@ -19,7 +19,7 @@ import "./passbase"
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://api.passbase.com/verification/v1*
+All URIs are relative to *https://api.passbase.com/verification/v2*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
