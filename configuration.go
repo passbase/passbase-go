@@ -61,7 +61,7 @@ func NewConfiguration() *Configuration {
 	cfg := &Configuration{
 		BasePath:      "https://api.passbase.com/verification/v2",
 		DefaultHeader: make(map[string]string),
-		UserAgent:     "passbase/go@1.2.0",
+		UserAgent:     "passbase/go@1.3.0",
 	}
 	return cfg
 }
