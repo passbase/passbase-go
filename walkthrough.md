@@ -22,10 +22,10 @@ func main() {
 		Key: "{{YOUR_SECRET_API_KEY}}",
     })
 
-	settings, _, err := client.ProjectApi.GetSettings(ctx)
+	identity, _, err := client.IdentityApi.GetIdentityById(ctx, "<uuid>")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Setting for ", settings.Slug, "->", settings)
+	fmt.Println("Identity for ", identity.Id, "->", identity)
 }
 ```
