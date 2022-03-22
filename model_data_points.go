@@ -10,21 +10,21 @@ package passbase
 
 // DataPoints key/value hashmap of the data extracted from the resource.
 type DataPoints struct {
-	DateOfIssue           string `json:"data_of_issue,omitempty"`
-	PlaceOfBirth          string `json:"place_of_birth,omitempty"`
-	IDAuthenticityFactor  string `json:"id_authenticity_factor,omitempty"`
-	FaceMatchFactor       string `json:"face_match_factor,omitempty"`
-	Nationality           string `json:"nationality,omitempty"`
-	MrtdVerified          string `json:"mrtd_verified,omitempty"`
-	RawMrzString          string `json:"raw_mrz_string,omitempty"`
-	Country               string `json:"country,omitempty"`
-	DocumentOriginCountry string `json:"document_origin_country,omitempty"`
-	LastName              string `json:"last_name,omitempty"`
-	FirstNames            string `json:"first_names,omitempty"`
-	MrtdDocumentCode      string `json:"mrtd_document_code,omitempty"`
-	Sex                   string `json:"sex,omitempty"`
-	MrtdIssuingCountry    string `json:"mrtd_issuing_country,omitempty"`
-	DateOfExpiry          string `json:"date_of_expiry,omitempty"`
-	DateOfBirth           string `json:"date_of_birth,omitempty"`
-	DocumentNumber        string `json:"document_number,omitempty"`
+	DateOfIssue           string  `json:"data_of_issue,omitempty"`
+	PlaceOfBirth          string  `json:"place_of_birth,omitempty"`
+	IDAuthenticityFactor  float64 `json:"id_authenticity_factor,omitempty"`
+	FaceMatchFactor       float64 `json:"face_match_factor,omitempty"`
+	Nationality           string  `json:"nationality,omitempty"`
+	MrtdVerified          bool    `json:"mrtd_verified,omitempty"`
+	RawMrzString          string  `json:"raw_mrz_string,omitempty"`
+	Country               string  `json:"country,omitempty"`
+	DocumentOriginCountry string  `json:"document_origin_country,omitempty"`
+	LastName              string  `json:"last_name,omitempty"`
+	FirstNames            string  `json:"first_names,omitempty"`
+	MrtdDocumentCode      string  `json:"mrtd_document_code,omitempty"`
+	Sex                   string  `json:"sex,omitempty"`
+	MrtdIssuingCountry    string  `json:"mrtd_issuing_country,omitempty"`
+	DateOfExpiry          string  `json:"date_of_expiry,omitempty"`
+	DateOfBirth           string  `json:"date_of_birth,omitempty"`
+	DocumentNumber        string  `json:"document_number,omitempty"`
 }
